@@ -1,0 +1,67 @@
+.main-layout {
+  display: flex;
+  background-color: #f4f7fa;
+  transition: padding-left 0.3s ease-in-out;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 260px; /* Coincide con el ancho del sidebar */
+  transition: margin-left 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content-area {
+  flex: 1;
+  padding: 30px;
+}
+
+/* --- Estilos para Sidebar cerrado --- */
+.sidebar-closed .sidebar {
+  transform: translateX(-100%);
+}
+
+.sidebar-closed .main-content {
+  margin-left: 0;
+}
+
+.sidebar-overlay {
+  display: none; /* Oculto por defecto */
+}
+
+/* --- Estilos para móvil --- */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    transition: none;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .sidebar-open .sidebar {
+    transform: translateX(0);
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999; /* Debajo del sidebar */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .sidebar-open .sidebar-overlay {
+    opacity: 1;
+  }
+}

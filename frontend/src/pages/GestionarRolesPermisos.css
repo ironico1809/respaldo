@@ -1,0 +1,123 @@
+.gestionar-roles-permisos-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.btn-nuevo {
+  align-self: flex-end;
+}
+
+.roles-permisos-card {
+  background: var(--color-highlight);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 24px;
+}
+
+.roles-permisos-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--color-card);
+}
+
+.roles-permisos-card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-text-main);
+}
+
+.roles-permisos-card-count {
+  background: rgba(29, 99, 227, 0.1);
+  color: var(--color-primary);
+  border-radius: 16px;
+  padding: 2px 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.roles-permisos-buscar {
+  margin-left: auto;
+  padding: 8px 14px;
+  border: 1px solid var(--color-card);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--color-bg);
+  color: var(--color-text-main);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.roles-permisos-buscar:focus {
+  border-color: var(--color-primary);
+}
+
+.roles-permisos-table-container {
+  overflow-x: auto;
+}
+
+.roles-permisos-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+}
+
+.roles-permisos-table th, .roles-permisos-table td {
+  padding: 14px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-card);
+}
+
+.roles-permisos-table th {
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.roles-permisos-table tbody tr:hover {
+  background: var(--color-bg);
+}
+
+.roles-permisos-estado {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: inline-block;
+  text-align: center;
+}
+
+.roles-permisos-estado.activo {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+}
+
+.roles-permisos-estado.inactivo {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.roles-permisos-acciones {
+  display: flex;
+  gap: 8px;
+}
+
+.permisos-count {
+  background: rgba(29, 99, 227, 0.1);
+  color: var(--color-primary);
+  border-radius: 16px;
+  padding: 2px 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.permisos-count.no-permisos {
+  background: var(--color-card);
+  color: var(--color-text-secondary);
+}

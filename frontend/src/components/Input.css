@@ -1,0 +1,37 @@
+.form-group {
+  margin-bottom: 1.25rem;
+  text-align: left;
+  position: relative;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-text-main);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 2px solid var(--color-card);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  box-sizing: border-box; /* Importante para que el padding no afecte el ancho */
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+}
+
+.form-group input::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.8;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background-color: var(--color-highlight);
+  box-shadow: 0 0 0 3px rgba(29, 99, 227, 0.15);
+}

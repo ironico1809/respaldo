@@ -1,0 +1,31 @@
+.btn-accion {
+  background: none;
+  border: 1px solid transparent;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-accion.btn-editar {
+  color: var(--color-text-secondary);
+}
+
+.btn-accion.btn-editar:hover {
+  background-color: rgba(29, 99, 227, 0.1);
+  color: var(--color-primary);
+  border-color: rgba(29, 99, 227, 0.2);
+}
+
+.btn-accion.btn-eliminar {
+  color: var(--color-text-secondary);
+}
+
+.btn-accion.btn-eliminar:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.2);
+}

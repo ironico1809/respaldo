@@ -1,0 +1,89 @@
+.gestionar-bitacora-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.bitacora-card {
+  background: var(--color-highlight);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 24px;
+}
+
+.bitacora-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--color-card);
+}
+
+.bitacora-card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-text-main);
+}
+
+.bitacora-card-count {
+  background: rgba(29, 99, 227, 0.1);
+  color: var(--color-primary);
+  border-radius: 16px;
+  padding: 2px 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.bitacora-buscar {
+  margin-left: auto;
+  padding: 8px 14px;
+  border: 1px solid var(--color-card);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--color-bg);
+  color: var(--color-text-main);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.bitacora-buscar:focus {
+  border-color: var(--color-primary);
+}
+
+.bitacora-table-container {
+  overflow-x: auto;
+}
+
+.bitacora-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+}
+
+.bitacora-table th, .bitacora-table td {
+  padding: 14px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-card);
+  vertical-align: middle;
+}
+
+.bitacora-table th {
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.bitacora-table tbody tr:hover {
+  background: var(--color-bg);
+}
+
+.bitacora-table td:nth-child(1) { /* ID */
+  width: 50px;
+}
+.bitacora-table td:nth-child(2) { /* Fecha y Hora */
+  white-space: nowrap;
+}

@@ -1,0 +1,105 @@
+.asignar-roles-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.asignar-roles-card {
+  background: var(--color-highlight);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 24px;
+}
+
+.asignar-roles-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--color-card);
+}
+
+.asignar-roles-card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-text-main);
+}
+
+.asignar-roles-card-count {
+  background: rgba(29, 99, 227, 0.1);
+  color: var(--color-primary);
+  border-radius: 16px;
+  padding: 2px 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.asignar-roles-buscar {
+  margin-left: auto;
+  padding: 8px 14px;
+  border: 1px solid var(--color-card);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--color-bg);
+  color: var(--color-text-main);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.asignar-roles-buscar:focus {
+  border-color: var(--color-primary);
+}
+
+.asignar-roles-table-container {
+  overflow-x: auto;
+}
+
+.asignar-roles-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+}
+
+.asignar-roles-table th, .asignar-roles-table td {
+  padding: 14px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-card);
+  vertical-align: middle;
+}
+
+.asignar-roles-table th {
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.asignar-roles-table tbody tr:hover {
+  background: var(--color-bg);
+}
+
+.rol-selector {
+  width: 100%;
+  max-width: 200px;
+  padding: 6px 10px;
+  border: 1px solid var(--color-card);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+}
+
+.rol-selector:hover {
+  border-color: var(--color-text-secondary);
+}
+
+.rol-selector:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(29, 99, 227, 0.15);
+}

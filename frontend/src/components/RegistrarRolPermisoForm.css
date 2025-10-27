@@ -1,0 +1,58 @@
+.registrar-rol-permiso-form .form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.registrar-rol-permiso-form .form-actions {
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+.form-error-message {
+  color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.form-group-checkboxes {
+  grid-column: 1 / -1; /* Ocupa todo el ancho de la grilla */
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-top: 1px solid var(--color-card);
+  border-bottom: 1px solid var(--color-card);
+}
+
+.form-group-checkboxes label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-text-main);
+  margin-bottom: 10px;
+  display: block;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.checkbox-item input[type="checkbox"] {
+  margin-right: 8px;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary); /* Color del checkbox */
+}
+
+.checkbox-item label {
+  margin-bottom: 0;
+  font-weight: normal;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}

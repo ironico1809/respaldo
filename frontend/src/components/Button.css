@@ -1,0 +1,37 @@
+/* Estilo base para todos los botones */
+.btn {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+/* Estilo para el botón primario (ej. login, guardar) */
+.btn-primary {
+  background-color: var(--color-primary); /* Color principal */
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #1A62D9; /* Un tono más oscuro para el hover */
+}
+
+.btn-primary:disabled {
+  background-color: #a0c3ff;
+  cursor: not-allowed;
+}
+
+/* Modificador para que ocupe todo el ancho */
+.btn-full {
+  width: 100%;
+}
