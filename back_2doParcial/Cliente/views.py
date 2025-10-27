@@ -4,6 +4,7 @@ from rest_framework import status
 from .models import Cliente
 from .serializers import ClienteSerializer
 from Usuarios.decorators import jwt_required
+from Bitacora.utils import registrar_accion_bitacora
 
 # GET /api/clientes/ - Listar clientes activos (PROTEGIDA)
 @api_view(['GET'])
@@ -41,7 +42,13 @@ def obtener_cliente(request, pk):
 def crear_cliente(request):
     serializer = ClienteSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
+        cliente = serializer.save()
+        # Registrar en bitácora
+        registrar_accion_bitacora(
+            request=request,
+            accion="Creación de Cliente",
+            descripcion=f"Se creó el cliente '{cliente.nombre_completo}' con CI {cliente.ci}."
+        )
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -57,7 +64,13 @@ def actualizar_cliente(request, pk):
 
     serializer = ClienteSerializer(cliente, data=request.data, partial=True)
     if serializer.is_valid():
-        serializer.save()
+        cliente_actualizado = serializer.save()
+        # Registrar en bitácora
+        registrar_accion_bitacora(
+            request=request,
+            accion="Actualización de Cliente",
+            descripcion=f"Se actualizó el cliente '{cliente_actualizado.nombre_completo}' con CI {cliente_actualizado.ci}."
+        )
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -69,6 +82,12 @@ def eliminar_cliente(request, pk):
     try:
         cliente = Cliente.objects.get(pk=pk, estado=True)
         cliente.delete()  # eliminación lógica
+        # Registrar en bitácora
+        registrar_accion_bitacora(
+            request=request,
+            accion="Eliminación de Cliente",
+            descripcion=f"Se eliminó (lógicamente) el cliente '{cliente.nombre_completo}' con CI {cliente.ci}."
+        )
         return Response({'message': 'Cliente eliminado correctamente (eliminación lógica)'}, status=status.HTTP_200_OK)
     except Cliente.DoesNotExist:
         return Response({'error': 'Cliente no encontrado o ya inactivo'}, status=status.HTTP_404_NOT_FOUND)
@@ -82,6 +101,12 @@ def restaurar_cliente(request, pk):
         cliente = Cliente.objects.get(pk=pk, estado=False)
         cliente.restaurar()
         serializer = ClienteSerializer(cliente)
+        # Registrar en bitácora
+        registrar_accion_bitacora(
+            request=request,
+            accion="Restauración de Cliente",
+            descripcion=f"Se restauró el cliente '{cliente.nombre_completo}' con CI {cliente.ci}."
+        )
         return Response({'message': 'Cliente restaurado correctamente', 'cliente': serializer.data}, status=status.HTTP_200_OK)
     except Cliente.DoesNotExist:
         return Response({'error': 'Cliente no encontrado o ya activo'}, status=status.HTTP_404_NOT_FOUND)

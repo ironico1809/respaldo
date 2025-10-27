@@ -8,7 +8,7 @@ class RegistroBitacora (serializers.Serializer):
     descripcion = serializers.CharField()
 
 class serializerBitacora (serializers.Serializer):
-    id_bitacora = serializers.CharField()
+    id = serializers.IntegerField()
     username = serializers.CharField()
     ip = serializers.CharField(max_length=45)
     fecha_hora = serializers.DateTimeField()

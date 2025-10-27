@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     # === CLIENTES ===
-    path('listar/', views.listar_clientes, name='listar-clientes'),
+    path('', views.listar_clientes, name='listar-clientes'),
     path('todos/', views.listar_todos_clientes, name='listar-todos-clientes'),
     path('crear/', views.crear_cliente, name='crear-cliente'),
     path('<int:pk>/', views.obtener_cliente, name='obtener-cliente'),
