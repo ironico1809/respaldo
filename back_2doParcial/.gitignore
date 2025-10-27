@@ -1,0 +1,61 @@
+# Entornos virtuales
+venv/
+env/
+ENV/
+.venv/
+nombre_del_entorno/
+
+# Python
+*.py[cod]
+*$py.class
+__pycache__/
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.Python
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+
+# Variables de entorno
+.env
+.env.local
+*.env
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+
+# Pytest
+.pytest_cache/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Archivos de configuración local
+*.sublime-project
+*.sublime-workspace
+
+# Migraciones (excepto __init__.py)
+*/migrations/*
+!*/migrations/__init__.py
