@@ -1,6 +1,6 @@
 /* Estilo base para todos los botones */
 .btn {
-  padding: 0.8rem 1.5rem;
+  padding: 1rem 1.5rem;
   border: none;
   border-radius: 8px;
   font-size: 1rem;
@@ -20,6 +20,7 @@
 .btn-primary {
   background-color: var(--color-primary); /* Color principal */
   color: white;
+  box-shadow: 0 4px 14px rgba(29, 99, 227, 0.2);
 }
 
 .btn-primary:hover {
@@ -30,6 +31,28 @@
   background-color: #a0c3ff;
   cursor: not-allowed;
 }
+
+/* Estilo para el botón secundario (ej. cancelar, ver detalles) */
+.btn-secondary {
+  background-color: #f0f2f5; /* Un gris claro */
+  color: #333;
+  border: 1px solid #d9d9d9;
+}
+
+.btn-secondary:hover {
+  background-color: #e6e8eb;
+}
+
+/* Estilo para el botón de peligro (ej. eliminar) */
+.btn-danger {
+  background-color: #ff4d4f;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #d9363e;
+}
+
 
 /* Modificador para que ocupe todo el ancho */
 .btn-full {

@@ -1,3 +1,11 @@
+export const getAll = async (): Promise<User[]> => {
+  try {
+    const response = await apiClient.get<User[]>('/usuarios/');
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 import apiClient from '../api/axiosConfig';
 
 interface User {

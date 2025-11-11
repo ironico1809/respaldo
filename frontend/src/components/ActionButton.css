@@ -1,3 +1,23 @@
+/* Botón de inactivar */
+.btn-accion.btn-inactivar {
+  color: var(--color-text-secondary);
+}
+
+.btn-accion.btn-inactivar:hover {
+  background-color: rgba(108, 117, 125, 0.1); /* gris */
+  color: var(--color-primary);
+  border-color: rgba(108, 117, 125, 0.2);
+}
+/* Botón ver detalles */
+.btn-accion.btn-ver-detalles {
+  color: var(--color-text-secondary);
+}
+
+.btn-accion.btn-ver-detalles:hover {
+  background-color: rgba(29, 99, 227, 0.08);
+  color: var(--color-primary);
+  border-color: rgba(29, 99, 227, 0.2);
+}
 .btn-accion {
   background: none;
   border: 1px solid transparent;
@@ -19,7 +39,15 @@
   color: var(--color-primary);
   border-color: rgba(29, 99, 227, 0.2);
 }
+.btn-accion.btn-ver {
+  color: var(--color-text-secondary);
+}
 
+.btn-accion.btn-ver:hover {
+  background-color: rgba(29, 99, 227, 0.1);
+  color: var(--color-primary);
+  border-color: rgba(29, 99, 227, 0.2);
+}
 .btn-accion.btn-eliminar {
   color: var(--color-text-secondary);
 }

@@ -22,24 +22,23 @@
 }
 
 .login-logo {
-  width: 50px;
-  margin-bottom: 1.5rem;
-}
-
-.login-container h2 {
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: var(--color-primary);
-  margin: 0 0 0.5rem 0;
+  width: 180px; /* Logo más grande para mayor impacto visual */
+  height: auto;
+  margin-bottom: 0.5rem; /* Espacio reducido debajo del logo */
+  object-fit: contain; /* Asegura que el logo no se distorsione */
 }
 
 .login-subtitle {
   color: var(--color-text-secondary);
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem; /* Más espacio antes del formulario */
 }
 
-.error-message {
-  color: #ef4444; /* Un color rojo */
-  margin-bottom: 1rem;
+.form-error-message {
+  color: #ef4444; /* Rojo para errores */
+  background-color: rgba(239, 68, 68, 0.1);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
   font-size: 0.9rem;
+  text-align: center;
 }

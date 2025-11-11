@@ -1,0 +1,298 @@
+/* Textarea en el modal de notificación */
+.textarea-modal {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 2px solid var(--color-card);
+  font-size: 1rem;
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  transition: border-color 0.25s, box-shadow 0.25s;
+  box-sizing: border-box;
+}
+.textarea-modal:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background-color: var(--color-highlight);
+  box-shadow: 0 0 0 3px rgba(29, 99, 227, 0.15);
+}
+/* Botón flotante para abrir el modal */
+.btn-flotante-notificacion {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 1rem;
+  transition: background 0.2s;
+}
+.btn-flotante-notificacion:hover {
+  background-color: #1e5bb8;
+}
+
+/* Modal overlay */
+.modal-notificacion-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Modal box */
+.modal-notificacion {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  padding: 2rem 2.5rem;
+  min-width: 320px;
+  max-width: 95vw;
+  position: relative;
+  animation: modalFadeIn 0.2s;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal-notificacion h2 {
+  margin-top: 0;
+  margin-bottom: 1.2rem;
+  font-size: 1.3rem;
+  color: var(--color-text-primary);
+}
+
+.modal-notificacion-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.7rem;
+}
+
+.btn-cancelar-notificacion {
+  background: #e5e7eb;
+  color: #374151;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-cancelar-notificacion:hover {
+  background: #d1d5db;
+}
+/* Formulario de creación de notificaciones */
+.form-notificacion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  background: #f7f9fc;
+  padding: 1.2rem 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+}
+
+.form-notificacion input,
+.form-notificacion textarea {
+  font-size: 1rem;
+  padding: 0.7rem;
+  border-radius: 6px;
+  border: 1px solid #dbeafe;
+  outline: none;
+  resize: none;
+}
+
+.form-notificacion textarea {
+  min-height: 60px;
+  max-height: 120px;
+}
+
+.btn-crear-notificacion {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.btn-crear-notificacion:hover {
+  background-color: #1e5bb8;
+}
+
+.error-form {
+  color: #ef4444;
+  font-size: 0.95rem;
+  margin-top: -0.5rem;
+}
+.gestionar-notificaciones {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.header-notificaciones {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.header-notificaciones h1 {
+  font-size: 2rem;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.badge-no-leidas {
+  background-color: var(--color-primary);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.lista-notificaciones {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.notificacion-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+}
+
+.notificacion-item.no-leida {
+  border-left-color: var(--color-primary);
+  background-color: rgba(29, 99, 227, 0.05);
+}
+
+.notificacion-item.leida {
+  opacity: 0.7;
+}
+
+.notificacion-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.notificacion-contenido {
+  flex: 1;
+}
+
+.notificacion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.notificacion-header h3 {
+  font-size: 1.1rem;
+  color: var(--color-text-primary);
+  margin: 0;
+  font-weight: 600;
+}
+
+.fecha {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.mensaje {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.notificacion-acciones {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-left: 1rem;
+}
+
+.btn-marcar-leida {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-marcar-leida:hover {
+  background-color: #1e5bb8;
+  transform: scale(1.05);
+}
+
+.sin-notificaciones {
+  text-align: center;
+  padding: 3rem;
+  color: var(--color-text-secondary);
+  font-size: 1.1rem;
+}
+
+.sin-notificaciones p {
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .gestionar-notificaciones {
+    padding: 1rem;
+  }
+
+  .header-notificaciones {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .notificacion-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .notificacion-acciones {
+    width: 100%;
+    justify-content: flex-end;
+    margin-left: 0;
+    margin-top: 1rem;
+  }
+
+  .notificacion-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}

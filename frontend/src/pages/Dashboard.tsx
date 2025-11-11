@@ -1,8 +1,42 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
 
+// Interfaces para mockup data
+interface ProductoCritico {
+  id: number;
+  nombre: string;
+  stock: number;
+  stock_minimo: number;
+}
+
+interface ProductoMasVendido {
+  id: number;
+  nombre: string;
+  cantidad_vendida: number;
+  total_ventas: number;
+}
+
 const Dashboard: React.FC = () => {
+  const [inventarioCritico, setInventarioCritico] = useState<ProductoCritico[]>([]);
+  const [productosMasVendidos, setProductosMasVendidos] = useState<ProductoMasVendido[]>([]);
+
+  useEffect(() => {
+    // Mockup de inventario crítico
+    setInventarioCritico([
+      { id: 1, nombre: 'Microondas Panasonic', stock: 3, stock_minimo: 5 },
+      { id: 2, nombre: 'Lavadora Samsung', stock: 2, stock_minimo: 5 },
+      { id: 3, nombre: 'Ventilador de Pie', stock: 4, stock_minimo: 8 },
+    ]);
+
+    // Mockup de productos más vendidos
+    setProductosMasVendidos([
+      { id: 1, nombre: 'Refrigeradora LG', cantidad_vendida: 45, total_ventas: 157500 },
+      { id: 2, nombre: 'TV Sony 55"', cantidad_vendida: 38, total_ventas: 159600 },
+      { id: 3, nombre: 'Cocina Mabe', cantidad_vendida: 32, total_ventas: 60800 },
+    ]);
+  }, []);
+
   return (
         <>
           <div className="stats-grid">
@@ -48,6 +82,64 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
           <div className="content-grid">
+            {/* Inventario Crítico */}
+            <div className="card">
+              <div className="card-header">
+                <h2 className="card-title">⚠️ Inventario Crítico</h2>
+                <a href="/gestionar-inventario" className="card-action">Ver inventario →</a>
+              </div>
+              <div className="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Producto</th>
+                      <th>Stock Actual</th>
+                      <th>Stock Mínimo</th>
+                      <th>Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {inventarioCritico.map(producto => (
+                      <tr key={producto.id}>
+                        <td>{producto.nombre}</td>
+                        <td>{producto.stock}</td>
+                        <td>{producto.stock_minimo}</td>
+                        <td><span className="status-badge warning">Crítico</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Productos Más Vendidos */}
+            <div className="card">
+              <div className="card-header">
+                <h2 className="card-title">🔥 Productos Más Vendidos</h2>
+                <a href="#" className="card-action">Ver más →</a>
+              </div>
+              <div className="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Producto</th>
+                      <th>Cantidad</th>
+                      <th>Total Ventas</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {productosMasVendidos.map(producto => (
+                      <tr key={producto.id}>
+                        <td>{producto.nombre}</td>
+                        <td>{producto.cantidad_vendida}</td>
+                        <td>Bs {producto.total_ventas.toLocaleString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
             <div className="card">
               <div className="card-header">
                 <h2 className="card-title">Ventas Recientes</h2>

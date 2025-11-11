@@ -52,6 +52,13 @@ INSTALLED_APPS = [
     'Bitacora',
     'Permisos',
     'Cliente',
+    'Empleados',
+    'Producto',
+    'Carrito',
+    'Ventas',
+    'Notificaciones',
+    'Reportes',
+    'Predicciones',
 ]
 
 
@@ -98,6 +105,9 @@ DATABASES = {
         'PASSWORD': os.getenv('DB_PASSWORD'),
         'HOST': os.getenv('DB_HOST'),
         'PORT': os.getenv('DB_PORT'),
+        'OPTIONS': {
+            'client_encoding': 'UTF8',
+        },
     }
 }
 

@@ -14,15 +14,26 @@
 
 .form-group input {
   width: 100%;
-  padding: 0.8rem 1rem;
+  padding: 1rem 1.2rem 1rem 2.7rem;
   border: 2px solid var(--color-card);
   border-radius: 8px;
-  font-size: 0.95rem;
+  font-size: 1rem;
   box-sizing: border-box; /* Importante para que el padding no afecte el ancho */
   transition: border-color 0.25s ease, box-shadow 0.25s ease;
   background-color: var(--color-bg);
   color: var(--color-text-main);
 }
+
+.input-icon {
+  position: absolute;
+  left: calc(1rem - 0.1em);
+  top: calc(1rem + 0.92em);
+  font-size: 1.55em;
+  color: #888;
+  pointer-events: none;
+  z-index: 2;
+}
+
 
 .form-group input::placeholder {
   color: var(--color-text-secondary);

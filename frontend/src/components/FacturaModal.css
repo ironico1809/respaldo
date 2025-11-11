@@ -1,0 +1,136 @@
+.factura-container {
+    padding: 2rem;
+    color: #333;
+}
+
+.factura-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 1rem;
+}
+
+.factura-logo {
+    display: flex;
+    align-items: center;
+}
+
+.factura-logo img {
+    width: 50px;
+    height: 50px;
+    margin-right: 1rem;
+}
+
+.factura-logo h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #007bff;
+    margin: 0;
+}
+
+.factura-info {
+    text-align: right;
+}
+
+.factura-info p {
+    margin: 0.2rem 0;
+    font-size: 0.9rem;
+}
+
+.factura-estado {
+    padding: 0.2rem 0.6rem;
+    border-radius: 10px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.factura-estado.completada { background-color: #28a745; }
+.factura-estado.pendiente { background-color: #ffc107; }
+.factura-estado.cancelada { background-color: #dc3545; }
+
+.factura-cliente {
+    margin-bottom: 2rem;
+}
+
+.factura-cliente h2 {
+    font-size: 1.1rem;
+    color: #555;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.factura-items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+}
+
+.factura-items-table th,
+.factura-items-table td {
+    padding: 0.8rem;
+    border-bottom: 1px solid #eee;
+}
+
+.factura-items-table th {
+    background-color: #f8f9fa;
+    text-align: left;
+    font-weight: 600;
+}
+
+.factura-items-table td:nth-child(2),
+.factura-items-table td:nth-child(3),
+.factura-items-table td:nth-child(4) {
+    text-align: right;
+}
+
+.factura-total {
+    text-align: right;
+    margin-bottom: 2rem;
+}
+
+.factura-total p {
+    margin: 0.3rem 0;
+}
+
+.factura-total h3 {
+    margin-top: 0.5rem;
+    color: #007bff;
+}
+
+.factura-footer {
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.factura-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    border-top: 1px solid #eee;
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #factura-imprimible, #factura-imprimible * {
+        visibility: visible;
+    }
+    #factura-imprimible {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+    .factura-actions {
+        display: none;
+    }
+}

@@ -18,6 +18,10 @@ const getPageTitle = (pathname: string): string => {
       return 'Bitácora de Actividad';
     case '/gestionar-usuarios':
       return 'Gestión de Usuarios';
+    case '/inventario':
+      return 'Inventario de Productos';
+    case '/gestionar-productos':
+      return 'Gestión de Productos';
     default:
       return 'SmartSale365';
   }

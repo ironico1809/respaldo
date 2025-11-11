@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Empleado
-from .serializers import EmpleadoSerializer, EmpleadoCreateSerializer
+#from .serializers import EmpleadoSerializer, EmpleadoCreateSerializer
 from Usuarios.decorators import jwt_required
 
 # GET /api/empleados/ - Listar empleados activos (PROTEGIDA)

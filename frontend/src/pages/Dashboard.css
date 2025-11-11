@@ -277,6 +277,7 @@ tbody tr:hover {
 .status-badge.completed { background: rgba(46, 213, 115, 0.1); color: #2ED573; }
 .status-badge.pending { background: rgba(255, 159, 67, 0.1); color: #FF9F43; }
 .status-badge.cancelled { background: rgba(255, 71, 87, 0.1); color: #FF4757; }
+.status-badge.warning { background: rgba(255, 159, 67, 0.1); color: #FF9F43; }
 .activity-list {
   display: flex;
   flex-direction: column;

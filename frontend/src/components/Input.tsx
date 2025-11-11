@@ -5,19 +5,21 @@ import './Input.css';
 interface InputProps {
   id: string;
   label: string;
-  value: string;
+  value: string | number;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   type?: string;
   placeholder?: string;
   disabled?: boolean;
   autoComplete?: string;
   className?: string;
+  icon?: React.ReactNode;
 }
 
-const Input: React.FC<InputProps> = ({ id, label, type = 'text', value, onChange, placeholder, disabled, autoComplete, className }) => {
+const Input: React.FC<InputProps> = ({ id, label, type = 'text', value, onChange, placeholder, disabled, autoComplete, className, icon }) => {
   return (
     <div className="form-group">
       <label htmlFor={id}>{label}</label>
+      {icon && <span className="input-icon">{icon}</span>}
       <input
         type={type}
         id={id}

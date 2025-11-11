@@ -24,3 +24,4 @@ def registrar_accion_bitacora(request, accion, descripcion, usuario_obj=None):
         accion=accion,
         descripcion=descripcion
     )
+    

@@ -1,0 +1,44 @@
+.modal-movimientos-dialog-titulo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-movimientos-nombre-producto {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+.modal-movimientos-tabla-container {
+    margin-top: 16px;
+}
+
+.modal-movimientos-sin-registros {
+    margin-top: 16px;
+    color: #555;
+}
+
+.movimiento-chip {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-align: center;
+    display: inline-block;
+    text-transform: capitalize;
+}
+
+.movimiento-chip.entrada {
+    background-color: #e7f4e8;
+    color: #28a745;
+}
+
+.movimiento-chip.salida {
+    background-color: #fbe9e9;
+    color: #dc3545;
+}
+
+.movimiento-chip.ajuste {
+    background-color: #f0f2f5;
+    color: #555;
+}

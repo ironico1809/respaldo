@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Sidebar.css';
 import { NavLink } from 'react-router-dom';
+import logo from '../assets/logo.png';
 
 const Sidebar: React.FC = () => {
   const [activeMenu, setActiveMenu] = useState<string | null>('dashboard');
@@ -13,8 +14,8 @@ const Sidebar: React.FC = () => {
     <aside className="sidebar">
       <div className="sidebar-header">
         <div className="logo">
-          <div className="logo-icon">
-            <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M7 7V6a5 5 0 0 1 10 0v1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1zm2-1a3 3 0 0 1 6 0v1H9V6zm-3 3v11h12V9H6z" fill="#fff"/></svg>
+          <div className="logo-icon" style={{ background: 'none' }}>
+            <img src={logo} alt="Logo" style={{ width: 48, height: 48, objectFit: 'contain', background: 'none' }} />
           </div>
           <span>SmartSale365</span>
         </div>
@@ -64,6 +65,12 @@ const Sidebar: React.FC = () => {
             </span>
             <span>Asignar Roles a Usuarios</span>
           </NavLink>
+          <NavLink to="/asignar-permisos" className={({ isActive }) => "nav-subitem" + (isActive ? " active" : "")}>
+            <span className="nav-subitem-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </span>
+            <span>Asignar Permisos</span>
+          </NavLink>
           <NavLink to="/gestionar-bitacora" className={({ isActive }) => "nav-subitem" + (isActive ? " active" : "")}>
             <span className="nav-subitem-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
@@ -89,18 +96,66 @@ const Sidebar: React.FC = () => {
             <span>Gestionar Clientes</span>
           </NavLink>
         </div>
+        <div 
+          className={`nav-item ${activeMenu === 'ventas' ? 'active' : ''}`}
+          onClick={() => handleMenuClick('ventas')}
+        >
+          <span className="nav-item-icon">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.16 14l.84-2h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0 0 20 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12z" fill="#fff"/></svg>
+          </span>
+          <span>Gestión de Ventas</span>
+          <span className="nav-item-arrow"></span>
+        </div>
+        <div className="submenu">
+          <NavLink to="/gestionar-ventas" className={({ isActive }) => "nav-subitem" + (isActive ? " active" : "")}>
+            <span className="nav-subitem-icon">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.16 14l.84-2h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0 0 20 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12z" fill="#fff"/></svg>
+            </span>
+            <span>Gestionar Ventas</span>
+          </NavLink>
+        </div>
+        <div 
+          className={`nav-item ${activeMenu === 'inventario' ? 'active' : ''}`}
+          onClick={() => handleMenuClick('inventario')}
+        >
+          <span className="nav-item-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4.07a2 2 0 0 0-2 0l-7 4.07A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4.07a2 2 0 0 0 2 0l7-4.07A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+          </span>
+          <span>Gestión de Inventario</span>
+          <span className="nav-item-arrow"></span>
+        </div>
+        <div className="submenu">
+          <NavLink to="/inventario" className={({ isActive }) => "nav-subitem" + (isActive ? " active" : "")}> 
+            <span className="nav-subitem-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+            </span>
+            <span>Inventario de Productos</span>
+          </NavLink>
+          <NavLink to="/gestionar-inventario" className={({ isActive }) => "nav-subitem" + (isActive ? " active" : "")}> 
+            <span className="nav-subitem-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><line x1="8" y1="4" x2="8" y2="20"></line></svg>
+            </span>
+            <span>Gestionar Inventario</span>
+          </NavLink>
+        </div>
         <a href="#" className="nav-item">
           <span className="nav-item-icon">
             <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.16 14l.84-2h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0 0 20 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12z" fill="#fff"/></svg>
           </span>
           <span>Compras / E-Commerce</span>
         </a>
-        <a href="#" className="nav-item">
+        <NavLink to="/notificaciones" className={({ isActive }) => "nav-item" + (isActive ? " active" : "")}>
+          <span className="nav-item-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          </span>
+          <span>Notificaciones</span>
+        </NavLink>
+        <NavLink to="/reportes" className={({ isActive }) => "nav-item" + (isActive ? " active" : "")}>
           <span className="nav-item-icon">
             <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M3 17h2v-7H3v7zm4 0h2v-12H7v12zm4 0h2v-9h-2v9zm4 0h2v-4h-2v4z" fill="#fff"/></svg>
           </span>
-          <span>Reportes Dinámicos</span>
-        </a>
+          <span>Reportes</span>
+        </NavLink>
       </nav>
       <div className="sidebar-footer">
         <div className="user-info">

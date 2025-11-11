@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import type { FormEvent, ChangeEvent } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import type { FormEvent } from 'react';
 import './LoginPage.css';
-import logo from '../assets/logo.svg';
+import logo from '../assets/logo.png';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import { login } from '../services/authService';
+import { MdPerson, MdLock } from 'react-icons/md';
+
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -32,22 +34,36 @@ const LoginPage: React.FC = () => {
     <div className="login-page">
       <div className="login-container">
         <img src={logo} alt="SmartSales Logo" className="login-logo" />
-        <h2>Iniciar Sesión</h2>
-        <p className="login-subtitle">Bienvenido a SmartSales365</p>
-        <form onSubmit={handleLogin}>
-          <Input id="username" label="Usuario" value={username} onChange={(e) => setUsername(e.target.value)} />
+        <p className="login-subtitle" style={{ marginTop: 0 }}>Ingresa tus credenciales para acceder a tu cuenta</p>
+        
+        <form onSubmit={handleLogin} noValidate>
+          <Input
+            id="username"
+            label="Nombre de Usuario"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="ej. juan.perez"
+            icon={<MdPerson />}
+          />
+
           <Input
             id="password"
             label="Contraseña"
             type="password"
             value={password}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+            icon={<MdLock />}
           />
-          {error && <p className="error-message">{error}</p>}
+
+          {error && <p className="form-error-message">{error}</p>}
           <Button type="submit" className="btn-primary btn-full" disabled={loading}>
             {loading ? 'Ingresando...' : 'Ingresar'}
           </Button>
         </form>
+        <div className="login-footer">
+          <Link to="/recuperar-password">¿Olvidaste tu contraseña?</Link>
+        </div>
       </div>
     </div>
   );

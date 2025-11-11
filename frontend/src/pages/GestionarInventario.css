@@ -1,0 +1,140 @@
+.gestionar-inventario-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.btn-nuevo {
+  align-self: flex-end;
+}
+
+.inventario-card {
+  background: var(--color-highlight);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 24px;
+}
+
+.inventario-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--color-card);
+  flex-wrap: wrap;
+}
+
+.inventario-card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-text-main);
+}
+
+.inventario-card-count {
+  background: rgba(29, 99, 227, 0.1);
+  color: var(--color-primary);
+  border-radius: 16px;
+  padding: 2px 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.inventario-controles {
+  margin-left: auto;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.inventario-filtro-estado {
+  padding: 8px 14px;
+  border: 1px solid var(--color-card);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background: var(--color-bg);
+  color: var(--color-text-main);
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.inventario-filtro-estado:hover {
+  border-color: var(--color-primary);
+  background: rgba(29, 99, 227, 0.05);
+}
+
+.inventario-filtro-estado:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(29, 99, 227, 0.1);
+}
+
+.inventario-buscar {
+  padding: 8px 14px;
+  border: 1px solid var(--color-card);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--color-bg);
+  color: var(--color-text-main);
+  outline: none;
+  transition: border-color 0.2s;
+  min-width: 300px;
+}
+
+.inventario-buscar:focus {
+  border-color: var(--color-primary);
+}
+
+.inventario-table-container {
+  overflow-x: auto;
+}
+
+.inventario-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+}
+
+.inventario-table th, .inventario-table td {
+  padding: 14px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-card);
+}
+
+.inventario-table th {
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.inventario-table tbody tr:hover {
+  background: var(--color-bg);
+}
+
+.inventario-estado {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: inline-block;
+  text-align: center;
+}
+
+.inventario-estado.activo {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+}
+
+.inventario-estado.inactivo {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.inventario-acciones {
+  display: flex;
+  gap: 8px;
+}

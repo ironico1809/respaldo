@@ -23,4 +23,11 @@ urlpatterns = [
     path('api/permisos/', include('Permisos.urls')),
     path('api/bitacora/', include('Bitacora.urls')),
     path('api/clientes/', include('Cliente.urls')),
+    path('api/empleados/', include('Empleados.urls')),
+    path('api/productos/', include('Producto.urls')),
+    path('api/carritos/', include('Carrito.urls')),
+    path('api/ventas/', include('Ventas.urls')),
+    path('api/notificaciones/', include('Notificaciones.urls')),
+    path('api/reportes/', include('Reportes.urls')),
+    path('api/predicciones/', include('Predicciones.urls')),
 ]
