@@ -23,6 +23,16 @@ class VentaViewSet(viewsets.ModelViewSet):
             return CrearVentaDesdeCarritoSerializer
         return VentaSerializer
     
+    def create(self, request, *args, **kwargs):
+        """Crear venta con serializer correcto para response"""
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        venta = serializer.save()
+        
+        # Usar VentaSerializer para la respuesta
+        response_serializer = VentaSerializer(venta)
+        return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+    
     @action(detail=False, methods=['post'])
     def crear_desde_carrito(self, request):
         """Crear venta desde el carrito del usuario"""

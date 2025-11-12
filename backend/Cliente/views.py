@@ -6,11 +6,21 @@ from .serializers import ClienteSerializer
 from Usuarios.decorators import jwt_required
 from Bitacora.utils import registrar_accion_bitacora
 
+from django.db.models import Q
+
 # GET /api/clientes/ - Listar clientes activos (PROTEGIDA)
 @api_view(['GET'])
 @jwt_required
 def listar_clientes(request):
+    search_query = request.query_params.get('search', None)
     clientes = Cliente.objects.filter(estado=True)
+    
+    if search_query:
+        clientes = clientes.filter(
+            Q(nombre_completo__icontains=search_query) |
+            Q(ci__icontains=search_query)
+        )[:10]  # Limitar a 10 resultados para el autocompletado
+    
     serializer = ClienteSerializer(clientes, many=True)
     return Response(serializer.data)
 
@@ -40,6 +50,7 @@ def obtener_cliente(request, pk):
 @api_view(['POST'])
 @jwt_required
 def crear_cliente(request):
+    print(request.data)
     serializer = ClienteSerializer(data=request.data)
     if serializer.is_valid():
         cliente = serializer.save()

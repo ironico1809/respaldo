@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ModalRegistrarMovimiento.css';
+import { movimientoService } from '../services/productoService';
 
 interface Producto {
   id: number;
@@ -42,31 +43,26 @@ const ModalRegistrarMovimiento: React.FC<ModalRegistrarMovimientoProps> = ({
     }
 
     try {
-      const response = await fetch('http://localhost:8000/api/productos/movimientos/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          producto: productoId,
-          tipo_movimiento: tipoMovimiento,
-          cantidad: cantidad,
-          motivo: motivo || `${tipoMovimiento} de inventario`,
-          usuario_responsable: null // Aquí puedes agregar el ID del usuario logueado
-        }),
+      // Obtener el ID del usuario autenticado desde localStorage
+      const usuarioStr = localStorage.getItem('usuario');
+      const usuario = usuarioStr ? JSON.parse(usuarioStr) : null;
+      const usuarioId = usuario?.id || 1; // Por defecto usuario 1 si no hay sesión
+      
+      await movimientoService.create({
+        producto: Number(productoId),
+        tipo_movimiento: tipoMovimiento,
+        cantidad: cantidad,
+        motivo: motivo || `${tipoMovimiento} de inventario`,
+        usuario_responsable: usuarioId
       });
 
-      if (response.ok) {
-        alert('Movimiento registrado exitosamente');
-        alGuardar();
-        handleReset();
-      } else {
-        const error = await response.json();
-        alert(`Error: ${error.error || 'No se pudo registrar el movimiento'}`);
-      }
-    } catch (error) {
+      alert('Movimiento registrado exitosamente');
+      alGuardar();
+      handleReset();
+    } catch (error: any) {
       console.error('Error al registrar movimiento:', error);
-      alert('Error al registrar el movimiento');
+      const errorMsg = error.response?.data?.error || error.message || 'Error al registrar el movimiento';
+      alert(`Error: ${errorMsg}`);
     }
   };
 

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.db import transaction
+from decimal import Decimal
 from .models import Venta, VentaDetalle
 from Cliente.models import Cliente
 from Empleados.models import Empleado
@@ -32,10 +33,10 @@ class VentaSerializer(serializers.ModelSerializer):
         read_only_fields = ['fecha_venta']
     
     def get_subtotal(self, obj):
-        return obj.monto_total / 1.18
+        return obj.monto_total / Decimal('1.18')
     
     def get_igv(self, obj):
-        return obj.monto_total - (obj.monto_total / 1.18)
+        return obj.monto_total - (obj.monto_total / Decimal('1.18'))
 
 
 class CrearVentaDesdeCarritoSerializer(serializers.Serializer):
@@ -124,20 +125,27 @@ class VentaCreateSerializer(serializers.Serializer):
     def create(self, validated_data):
         detalles_data = validated_data.pop('detalles')
         
+        if not detalles_data:
+            raise serializers.ValidationError('Debe incluir al menos un detalle de venta')
+        
         # Verificar stock
         for detalle in detalles_data:
-            producto = Producto.objects.get(id=detalle['producto_id'])
-            if producto.stock < detalle['cantidad']:
-                raise serializers.ValidationError(
-                    f'Stock insuficiente para {producto.nombre}'
-                )
+            try:
+                producto = Producto.objects.get(id=detalle['producto_id'])
+                if producto.stock < int(detalle['cantidad']):
+                    raise serializers.ValidationError(
+                        f'Stock insuficiente para {producto.nombre}. Stock disponible: {producto.stock}'
+                    )
+            except Producto.DoesNotExist:
+                raise serializers.ValidationError(f'Producto con ID {detalle["producto_id"]} no existe')
         
         # Calcular monto total (con IGV incluido)
+        from decimal import Decimal
         subtotal = sum(
-            float(detalle['precio_unitario']) * int(detalle['cantidad']) 
+            Decimal(str(detalle['precio_unitario'])) * Decimal(str(detalle['cantidad'])) 
             for detalle in detalles_data
         )
-        monto_total = subtotal * 1.18
+        monto_total = subtotal * Decimal('1.18')
         
         # Crear venta
         venta = Venta.objects.create(
@@ -152,16 +160,20 @@ class VentaCreateSerializer(serializers.Serializer):
         for detalle in detalles_data:
             producto = Producto.objects.get(id=detalle['producto_id'])
             
+            from decimal import Decimal
+            precio_unit = Decimal(str(detalle['precio_unitario']))
+            cantidad = int(detalle['cantidad'])
+            
             VentaDetalle.objects.create(
                 venta=venta,
                 producto=producto,
-                cantidad=detalle['cantidad'],
-                precio_unitario=detalle['precio_unitario'],
-                subtotal=float(detalle['precio_unitario']) * int(detalle['cantidad'])
+                cantidad=cantidad,
+                precio_unitario=precio_unit,
+                subtotal=precio_unit * Decimal(str(cantidad))
             )
             
             # Actualizar stock del producto
-            producto.stock -= detalle['cantidad']
+            producto.stock -= cantidad
             producto.save()
         
         return venta

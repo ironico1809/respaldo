@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import type { FormEvent, ChangeEvent } from 'react';
 import Input from './Input';
+import AutocompleteInput from './AutocompleteInput';
 import Button from './Button';
 import './RegistrarUsuarioForm.css';
-import { crearUsuario, actualizarUsuario } from '../services/usuarioService';
+import { crearUsuario, actualizarUsuario, getUsuarios } from '../services/usuarioService';
 
 type Usuario = {
   id: number;
@@ -26,6 +27,20 @@ const RegistrarUsuarioForm: React.FC<RegistrarUsuarioFormProps> = ({ usuario, on
   const [tipoUsuario, setTipoUsuario] = useState<'administrador' | 'empleado' | 'supervisor'>('empleado');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [usuariosExistentes, setUsuariosExistentes] = useState<Usuario[]>([]);
+
+  // Cargar usuarios existentes para autocompletado
+  useEffect(() => {
+    const cargarUsuariosParaAutocompletado = async () => {
+      try {
+        const response = await getUsuarios();
+        setUsuariosExistentes(response.data);
+      } catch (err) {
+        console.error('Error al cargar usuarios para autocompletado:', err);
+      }
+    };
+    cargarUsuariosParaAutocompletado();
+  }, []);
 
   useEffect(() => {
     if (usuario) {
@@ -92,14 +107,42 @@ const RegistrarUsuarioForm: React.FC<RegistrarUsuarioFormProps> = ({ usuario, on
     <form onSubmit={handleSubmit} className="registrar-usuario-form">
       {error && <p className="form-error-message">{error}</p>}
       <div className="form-grid">
-        <Input
+        <AutocompleteInput
           id="username"
           label="Username"
           value={username}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+          onChange={(value, option) => {
+            setUsername(value);
+            // Si selecciona de autocompletado, llenar los otros campos
+            if (option?.metadata) {
+              const usuarioSeleccionado = option.metadata as Usuario;
+              setCorreo(usuarioSeleccionado.correo);
+              setTipoUsuario(usuarioSeleccionado.tipo_usuario);
+            }
+          }}
+          options={usuariosExistentes.map(u => ({
+            value: u.username,
+            label: `${u.username} - ${u.correo}`,
+            metadata: u
+          }))}
+          placeholder="Ingrese el username"
           disabled={!!usuario}
+          required
         />
-        <Input id="correo" label="Correo Electrónico" type="email" value={correo} onChange={(e: ChangeEvent<HTMLInputElement>) => setCorreo(e.target.value)} />
+        <AutocompleteInput 
+          id="correo" 
+          label="Correo Electrónico" 
+          type="email" 
+          value={correo} 
+          onChange={(value) => setCorreo(value)}
+          options={usuariosExistentes.map(u => ({
+            value: u.correo,
+            label: `${u.correo} - ${u.username}`,
+            metadata: u
+          }))}
+          placeholder="correo@ejemplo.com"
+          required
+        />
         
         <Input
           id="password"

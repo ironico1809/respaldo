@@ -1,6 +1,6 @@
 import axios from '../api/axiosConfig';
 
-const API_URL = '/api/productos';
+const API_URL = '/productos';  // Sin /api porque ya está en baseURL
 
 // Interfaces
 export interface Categoria {
@@ -73,42 +73,42 @@ export const categoriaService = {
 export const productoService = {
   // Obtener todos los productos
   getAll: async (): Promise<Producto[]> => {
-    const response = await axios.get(`${API_URL}/productos/`);
+    const response = await axios.get(`${API_URL}/`);
     return response.data;
   },
 
   // Obtener producto por ID
   getById: async (id: number): Promise<Producto> => {
-    const response = await axios.get(`${API_URL}/productos/${id}/`);
+    const response = await axios.get(`${API_URL}/${id}/`);
     return response.data;
   },
 
   // Crear nuevo producto
   create: async (producto: Omit<Producto, 'id' | 'categoria_nombre' | 'fecha_creacion' | 'es_critico'>): Promise<Producto> => {
-    const response = await axios.post(`${API_URL}/productos/`, producto);
+    const response = await axios.post(`${API_URL}/`, producto);
     return response.data;
   },
 
   // Actualizar producto
   update: async (id: number, producto: Partial<Producto>): Promise<Producto> => {
-    const response = await axios.put(`${API_URL}/productos/${id}/`, producto);
+    const response = await axios.put(`${API_URL}/${id}/`, producto);
     return response.data;
   },
 
   // Eliminar producto
   delete: async (id: number): Promise<void> => {
-    await axios.delete(`${API_URL}/productos/${id}/`);
+    await axios.delete(`${API_URL}/${id}/`);
   },
 
   // Obtener productos con inventario crítico
   getInventarioCritico: async (): Promise<Producto[]> => {
-    const response = await axios.get(`${API_URL}/productos/inventario_critico/`);
+    const response = await axios.get(`${API_URL}/inventario_critico/`);
     return response.data;
   },
 
   // Obtener productos activos
   getActivos: async (): Promise<Producto[]> => {
-    const response = await axios.get(`${API_URL}/productos/activos/`);
+    const response = await axios.get(`${API_URL}/activos/`);
     return response.data;
   },
 
@@ -120,7 +120,7 @@ export const productoService = {
     motivo: string,
     usuarioId: number
   ): Promise<Producto> => {
-    const response = await axios.post(`${API_URL}/productos/${id}/ajustar_stock/`, {
+    const response = await axios.post(`${API_URL}/${id}/ajustar_stock/`, {
       cantidad,
       tipo_movimiento: tipoMovimiento,
       motivo,
@@ -141,6 +141,18 @@ export const movimientoService = {
   // Obtener movimiento por ID
   getById: async (id: number): Promise<MovimientoInventario> => {
     const response = await axios.get(`${API_URL}/movimientos/${id}/`);
+    return response.data;
+  },
+
+  // Crear movimiento de inventario
+  create: async (movimiento: {
+    producto: number;
+    tipo_movimiento: 'entrada' | 'salida' | 'ajuste';
+    cantidad: number;
+    motivo: string;
+    usuario_responsable: number | null;
+  }): Promise<MovimientoInventario> => {
+    const response = await axios.post(`${API_URL}/movimientos/`, movimiento);
     return response.data;
   },
 

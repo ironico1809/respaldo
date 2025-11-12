@@ -1,6 +1,6 @@
 import axios from '../api/axiosConfig';
 
-const API_URL = '/api/empleados';
+const API_URL = '/empleados';  // Sin /api porque ya está en baseURL
 
 // Interfaces
 export interface Empleado {

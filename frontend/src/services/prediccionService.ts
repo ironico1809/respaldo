@@ -1,6 +1,6 @@
 import axios from '../api/axiosConfig';
 
-const API_URL = '/api/predicciones';
+const API_URL = '/predicciones';  // Sin /api porque ya está en baseURL
 
 // Interfaces
 export interface PrediccionVentas {

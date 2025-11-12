@@ -16,6 +16,7 @@ const PagoExitoso: React.FC = () => {
 
   const verificarPago = async () => {
     const sessionId = searchParams.get('session_id');
+    const ventaId = searchParams.get('venta_id');
 
     if (!sessionId) {
       setError('No se encontró el ID de sesión');
@@ -38,7 +39,10 @@ const PagoExitoso: React.FC = () => {
 
       if (response.ok) {
         setPagoConfirmado(true);
-        setDatosPago(data);
+        setDatosPago({
+          ...data,
+          venta_id: ventaId
+        });
       } else {
         setError(data.error || 'Error al verificar el pago');
       }
@@ -52,6 +56,10 @@ const PagoExitoso: React.FC = () => {
 
   const irACatalogo = () => {
     navigate('/catalogo');
+  };
+
+  const irAVentas = () => {
+    navigate('/gestionar-ventas');
   };
 
   const irAMisPedidos = () => {
@@ -104,10 +112,18 @@ const PagoExitoso: React.FC = () => {
           
           {datosPago && (
             <div className="pago-detalles">
-              <div className="pago-detalle-item">
-                <span>ID de compra:</span>
-                <strong>#{datosPago.carrito_id}</strong>
-              </div>
+              {datosPago.venta_id && (
+                <div className="pago-detalle-item">
+                  <span>ID de venta:</span>
+                  <strong>#{datosPago.venta_id}</strong>
+                </div>
+              )}
+              {datosPago.carrito_id && (
+                <div className="pago-detalle-item">
+                  <span>ID de compra:</span>
+                  <strong>#{datosPago.carrito_id}</strong>
+                </div>
+              )}
               <div className="pago-detalle-item">
                 <span>Total pagado:</span>
                 <strong>${datosPago.amount_total?.toFixed(2)} USD</strong>
@@ -120,21 +136,35 @@ const PagoExitoso: React.FC = () => {
           )}
 
           <div className="pago-acciones">
-            <button onClick={irACatalogo} className="btn-catalogo">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="9" cy="21" r="1"></circle>
-                <circle cx="20" cy="21" r="1"></circle>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-              </svg>
-              Seguir comprando
-            </button>
-            <button onClick={irAMisPedidos} className="btn-pedidos">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-              </svg>
-              Ver mis pedidos
-            </button>
+            {datosPago?.venta_id ? (
+              <>
+                <button onClick={irAVentas} className="btn-catalogo">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                  </svg>
+                  Ver ventas
+                </button>
+              </>
+            ) : (
+              <>
+                <button onClick={irACatalogo} className="btn-catalogo">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                  </svg>
+                  Seguir comprando
+                </button>
+                <button onClick={irAMisPedidos} className="btn-pedidos">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                  </svg>
+                  Ver mis pedidos
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>

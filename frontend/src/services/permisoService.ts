@@ -1,6 +1,6 @@
 import axios from '../api/axiosConfig';
 
-const API_URL = '/api/permisos';
+const API_URL = '/permisos';  // Sin /api porque ya está en baseURL
 
 // Interfaces
 export interface Permiso {

@@ -1,6 +1,6 @@
 import axios from '../api/axiosConfig';
 
-const API_URL = '/api';
+const API_URL = '';  // baseURL ya tiene /api
 
 // Interfaces
 export interface Venta {
@@ -37,6 +37,12 @@ export interface VentaCreate {
     cantidad: number;
     precio_unitario: number;
   }[];
+}
+
+export interface MetodoPago {
+  value: string;
+  label: string;
+  icon: string;
 }
 
 // Servicios
@@ -80,6 +86,12 @@ export const ventaService = {
   getUltimas: async (limit: number = 10): Promise<Venta[]> => {
     const response = await axios.get(`${API_URL}/ventas/ultimas/?limit=${limit}`);
     return response.data;
+  },
+
+  // Obtener métodos de pago disponibles
+  getMetodosPago: async (): Promise<MetodoPago[]> => {
+    const response = await axios.get(`${API_URL}/ventas/metodos_pago/`);
+    return response.data.metodos;
   },
 };
 

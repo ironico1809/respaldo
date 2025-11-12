@@ -2,6 +2,7 @@ from django.db import models
 
 class Cliente(models.Model):
     nombre_completo = models.CharField(max_length=150)
+    correo = models.EmailField(max_length=150, unique=True)
     telefono = models.CharField(max_length=20, unique=True)
     direccion = models.TextField()
     ci = models.CharField(max_length=20, unique=True)

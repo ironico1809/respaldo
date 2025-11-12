@@ -1,6 +1,6 @@
 import axios from '../api/axiosConfig';
 
-const API_URL = '/api';
+const API_URL = '';  // baseURL ya tiene /api
 
 // Interfaces
 export interface Carrito {
