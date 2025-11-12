@@ -1,6 +1,6 @@
 import axios from '../api/axiosConfig';
 
-const API_URL = '/api';
+const API_URL = '';
 
 // Interfaces
 export interface ReporteLog {
@@ -45,8 +45,10 @@ export const reporteService = {
   },
 
   // Generar reporte
-  generar: async (reporte: Omit<ReporteLog, 'id' | 'usuario_username' | 'fecha_generacion'>): Promise<ReporteLog> => {
-    const response = await axios.post(`${API_URL}/reportes/generar/`, reporte);
+  generar: async (reporte: Omit<ReporteLog, 'id' | 'usuario_username' | 'fecha_generacion'>): Promise<Blob> => {
+    const response = await axios.post(`${API_URL}/reportes/generar_pdf/`, reporte, {
+      responseType: 'blob'
+    });
     return response.data;
   },
 };

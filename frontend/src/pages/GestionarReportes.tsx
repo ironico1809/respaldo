@@ -3,13 +3,14 @@ import './GestionarReportes.css';
 import Button from '../components/Button';
 import DeleteButton from '../components/DeleteButton';
 import reporteService from '../services/reporteService';
+import { useBitacora } from '../hooks/useBitacora';
 
 interface Reporte {
   id: number;
-  usuario: number;
-  usuario_username?: string;
   prompt_original: string;
-  tipo_archivo: 'PDF' | 'EXCEL';
+  tipo_reporte: string;
+  fecha_inicio: string;
+  fecha_fin: string;
   fecha_generacion: string;
 }
 
@@ -19,48 +20,49 @@ const GestionarReportes: React.FC = () => {
   const [escuchando, setEscuchando] = useState(false);
   const [transcripcion, setTranscripcion] = useState('');
   const [procesando, setProcesando] = useState(false);
-  const [mostrarOpciones, setMostrarOpciones] = useState(false);
-  const [comandoTemp, setComandoTemp] = useState('');
-  const [cargando, setCargando] = useState(false);
+
+  const { registrar } = useBitacora();
 
   useEffect(() => {
-    cargarReportes();
+    // Registrar acceso a la página
+    registrar('ACCESO', 'Accedió a Gestionar Reportes');
   }, []);
 
-  const cargarReportes = async () => {
-    try {
-      setCargando(true);
-  // Reemplaza 1 por el id del usuario actual si tienes contexto
-  const data = await reporteService.getMisReportes(1);
-      // Mapeo para asegurar que prompt_original siempre sea string
-      setReportes(Array.isArray(data)
-        ? data.map((r) => ({
-            ...r,
-            prompt_original: r.prompt_original ?? '',
-          }))
-        : []);
-    } catch (error) {
-      console.error('Error al cargar reportes:', error);
-    } finally {
-      setCargando(false);
-    }
-  };
-
   const iniciarGrabacion = () => {
-    setEscuchando(true);
-    setTranscripcion('');
-    // Simulación de reconocimiento de voz
-    setTimeout(() => {
-      const ejemplos = [
-        'Generar reporte de ventas',
-        'Generar reporte de inventario crítico',
-        'Generar reporte de clientes activos',
-        'Generar reporte de bitácora de actividades'
-      ];
-      const ejemplo = ejemplos[Math.floor(Math.random() * ejemplos.length)];
-      setTranscripcion(ejemplo);
+    const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
+    
+    if (!SpeechRecognition) {
+      alert('Tu navegador no soporta reconocimiento de voz. Usa Chrome o Edge.');
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'es-ES';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    recognition.onstart = () => {
+      setEscuchando(true);
+      setTranscripcion('');
+    };
+
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setTranscripcion(transcript);
       setEscuchando(false);
-    }, 2000);
+    };
+
+    recognition.onerror = (event: any) => {
+      console.error('Error de reconocimiento:', event.error);
+      setEscuchando(false);
+      alert('Error al escuchar. Intenta de nuevo.');
+    };
+
+    recognition.onend = () => {
+      setEscuchando(false);
+    };
+
+    recognition.start();
   };
 
   const detenerGrabacion = () => {
@@ -70,68 +72,156 @@ const GestionarReportes: React.FC = () => {
     }
   };
 
-  const procesarComando = (comando: string) => {
+  const procesarComando = async (comando: string) => {
     const comandoLower = comando.toLowerCase();
     
     // Verificar si menciona un tipo de reporte reconocible
     const reconocido = comandoLower.includes('venta') || 
                        comandoLower.includes('inventario') || 
                        comandoLower.includes('cliente') || 
+                       comandoLower.includes('producto') ||
                        comandoLower.includes('bitácora') ||
                        comandoLower.includes('bitacora') ||
                        comandoLower.includes('actividad');
     
     if (reconocido) {
-      setComandoTemp(comando);
-      setMostrarOpciones(true);
+      await generarReporte(comando);
     } else {
       alert('No se reconoció el tipo de reporte. Intenta: "Generar reporte de ventas", "Generar reporte de inventario", etc.');
       setTranscripcion('');
     }
   };
 
-  const generarReporte = async (tipoArchivo: 'PDF' | 'EXCEL') => {
+  const generarReporte = async (comando: string) => {
     setProcesando(true);
-    setMostrarOpciones(false);
     
     try {
-      const nuevoReporte = await reporteService.generar({
-        usuario: 1, // Reemplaza por el id del usuario actual
-        prompt_original: comandoTemp,
-        tipo_archivo: tipoArchivo,
-      });
-      setReportes([
-        {
-          ...nuevoReporte,
-          prompt_original: nuevoReporte.prompt_original ?? '',
-        },
-        ...reportes,
-      ]);
+      // Determinar tipo de reporte y fechas basado en el comando
+      const comandoLower = comando.toLowerCase();
+      let tipo_reporte = 'ventas';
+      let fecha_inicio = '';
+      let fecha_fin = '';
+      
+      // Detectar tipo de reporte
+      if (comandoLower.includes('producto') || comandoLower.includes('inventario')) {
+        tipo_reporte = 'productos';
+      } else if (comandoLower.includes('cliente')) {
+        tipo_reporte = 'clientes';
+      }
+      
+      // Detectar período de tiempo
+      const hoy = new Date();
+      if (comandoLower.includes('hoy')) {
+        fecha_inicio = hoy.toISOString().split('T')[0];
+        fecha_fin = hoy.toISOString().split('T')[0];
+      } else if (comandoLower.includes('semana')) {
+        const inicioSemana = new Date(hoy);
+        inicioSemana.setDate(hoy.getDate() - hoy.getDay());
+        fecha_inicio = inicioSemana.toISOString().split('T')[0];
+        fecha_fin = hoy.toISOString().split('T')[0];
+      } else if (comandoLower.includes('mes') || comandoLower.includes('último mes') || comandoLower.includes('ultimo mes')) {
+        const inicioMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+        fecha_inicio = inicioMes.toISOString().split('T')[0];
+        fecha_fin = hoy.toISOString().split('T')[0];
+      } else {
+        // Por defecto: últimos 30 días
+        const hace30 = new Date(hoy);
+        hace30.setDate(hoy.getDate() - 30);
+        fecha_inicio = hace30.toISOString().split('T')[0];
+        fecha_fin = hoy.toISOString().split('T')[0];
+      }
+      
+      // Agregar el reporte a la lista local
+      const nuevoReporte: Reporte = {
+        id: Date.now(),
+        prompt_original: comando,
+        tipo_reporte,
+        fecha_inicio,
+        fecha_fin,
+        fecha_generacion: new Date().toISOString(),
+      };
+      
+      setReportes([nuevoReporte, ...reportes]);
+      
+      // Registrar en bitácora
+      await registrar('GENERAR_REPORTE', `Generó reporte de ${tipo_reporte} del ${fecha_inicio} al ${fecha_fin}`);
+      
+      alert(`Reporte de ${tipo_reporte} agregado. Puedes descargarlo en PDF o Excel desde la lista de abajo.`);
       setTranscripcion('');
-      setComandoTemp('');
-      alert(`Reporte generado exitosamente en formato ${tipoArchivo}`);
     } catch (error) {
-      console.error('Error al generar reporte:', error);
-      alert('Error al generar el reporte');
+      console.error('Error al procesar reporte:', error);
+      alert('Error al procesar el reporte');
     } finally {
       setProcesando(false);
     }
   };
 
-  const eliminarReporte = async (id: number) => {
+  const eliminarReporte = (id: number) => {
     if (window.confirm('¿Estás seguro de eliminar este reporte?')) {
-      try {
-        await reporteService.delete(id);
-        setReportes(reportes.filter((r) => r.id !== id));
-      } catch (error) {
-        console.error('Error al eliminar reporte:', error);
-      }
+      setReportes(reportes.filter((r) => r.id !== id));
     }
   };
 
-  const descargarReporte = (reporte: Reporte, formato: 'PDF' | 'EXCEL') => {
-    alert(`Descargando reporte en formato ${formato}: ${reporte.prompt_original}`);
-    // Aquí iría la lógica real de descarga
+  const descargarReporte = async (reporte: Reporte, formato: 'PDF' | 'EXCEL') => {
+    try {
+      if (formato === 'PDF') {
+        // Generar y descargar PDF
+        const response = await fetch('http://localhost:8000/api/reportes/generar_pdf/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            tipo: reporte.tipo_reporte,
+            fecha_inicio: reporte.fecha_inicio,
+            fecha_fin: reporte.fecha_fin
+          })
+        });
+
+        if (response.ok) {
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `reporte_${reporte.tipo_reporte}_${new Date().getTime()}.pdf`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          window.URL.revokeObjectURL(url);
+          
+          // Registrar descarga en bitácora
+          await registrar('DESCARGAR_PDF', `Descargó reporte ${reporte.tipo_reporte} en PDF`);
+          
+          alert(`Reporte PDF descargado exitosamente`);
+        } else {
+          alert('Error al generar reporte PDF');
+        }
+      } else {
+        // Generar y descargar EXCEL
+        const excelBlob = await reporteService.generar({
+          usuario: 1,
+          prompt_original: reporte.prompt_original,
+          tipo_archivo: formato,
+        });
+        
+        const url = window.URL.createObjectURL(excelBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `reporte_${reporte.tipo_reporte}_${new Date().getTime()}.xlsx`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+        
+        // Registrar descarga en bitácora
+        await registrar('DESCARGAR_EXCEL', `Descargó reporte ${reporte.tipo_reporte} en Excel`);
+        
+        alert(`Reporte Excel descargado exitosamente`);
+      }
+    } catch (error) {
+      console.error('Error al descargar reporte:', error);
+      alert('Error al descargar el reporte');
+    }
   };
 
   const formatearFecha = (fecha: string) => {
@@ -282,63 +372,16 @@ const GestionarReportes: React.FC = () => {
         </div>
       </div>
 
-      {/* Modal de opciones de formato */}
-      {mostrarOpciones && (
-        <div className="modal-overlay" onClick={() => setMostrarOpciones(false)}>
-          <div className="modal-opciones" onClick={(e) => e.stopPropagation()}>
-            <h3>¿En qué formato deseas el reporte?</h3>
-            <p className="comando-reconocido">"{comandoTemp}"</p>
-            <div className="opciones-formato">
-              <button
-                className="opcion-btn pdf"
-                onClick={() => generarReporte('PDF')}
-                disabled={procesando}
-              >
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                  <polyline points="14 2 14 8 20 8" />
-                  <line x1="9" y1="15" x2="15" y2="15" />
-                </svg>
-                <span>PDF</span>
-              </button>
-              <button
-                className="opcion-btn excel"
-                onClick={() => generarReporte('EXCEL')}
-                disabled={procesando}
-              >
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z" />
-                </svg>
-                <span>Excel</span>
-              </button>
-            </div>
-            <button 
-              className="btn-cancelar"
-              onClick={() => {
-                setMostrarOpciones(false);
-                setTranscripcion('');
-                setComandoTemp('');
-              }}
-            >
-              Cancelar
-            </button>
-          </div>
-        </div>
-      )}
-
       <div className="seccion-historial">
         <h2>Reportes Generados</h2>
-        {cargando ? (
-          <div className="sin-reportes">
-            <p>Cargando reportes...</p>
-          </div>
-        ) : reportes.length === 0 ? (
+        {reportes.length === 0 ? (
           <div className="sin-reportes">
             <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
               <polyline points="14 2 14 8 20 8" />
             </svg>
             <p>No hay reportes generados todavía</p>
+            <p className="hint-text">Usa el comando de voz o escribe para generar reportes</p>
           </div>
         ) : (
           <div className="lista-reportes">
@@ -353,18 +396,11 @@ const GestionarReportes: React.FC = () => {
                 <div className="reporte-info">
                   <div className="reporte-titulo">
                     <h4>{reporte.prompt_original}</h4>
-                    <span className={`badge-tipo ${reporte.tipo_archivo.toLowerCase()}`}>
-                      {reporte.tipo_archivo}
+                    <span className={`badge-tipo ${reporte.tipo_reporte}`}>
+                      {reporte.tipo_reporte.toUpperCase()}
                     </span>
                   </div>
                   <div className="reporte-meta">
-                    <span>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                        <circle cx="12" cy="7" r="4" />
-                      </svg>
-                      {reporte.usuario_username || 'Usuario'}
-                    </span>
                     <span>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
@@ -373,6 +409,13 @@ const GestionarReportes: React.FC = () => {
                         <line x1="3" y1="10" x2="21" y2="10" />
                       </svg>
                       {formatearFecha(reporte.fecha_generacion)}
+                    </span>
+                    <span>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                      </svg>
+                      {reporte.fecha_inicio} - {reporte.fecha_fin}
                     </span>
                   </div>
                 </div>

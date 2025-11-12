@@ -18,33 +18,36 @@ import Carrito from './pages/Carrito.tsx';
 import Pagos from './pages/Pagos.tsx';
 import PagoExitoso from './pages/PagoExitoso.tsx';
 import DashboardPredicciones from './pages/DashboardPredicciones.tsx';
+import { PermisosProvider } from './context/PermisosContext';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route element={<MainLayout />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/gestionar-clientes" element={<GestionarClientes />} />
-          <Route path="/gestionar-roles-permisos" element={<GestionarRolesPermisos />} />
-          <Route path="/asignar-roles" element={<AsignarRoles />} />
-          <Route path="/gestionar-bitacora" element={<GestionarBitacora />} />
-          <Route path="/gestionar-usuarios" element={<GestionarUsuarios />} />
-          <Route path="/gestionar-inventario" element={<GestionarInventario />} />
-          <Route path="/gestionar-ventas" element={<GestionarVentas />} />
-          <Route path="/catalogo" element={<Catalogo />} />
-          <Route path="/carrito" element={<Carrito />} />
-          <Route path="/pagos" element={<Pagos />} />
-          <Route path="/pago-exitoso" element={<PagoExitoso />} />
-          <Route path="/predicciones" element={<DashboardPredicciones />} />
-          <Route path="/notificaciones" element={<GestionarNotificaciones />} />
-          <Route path="/reportes" element={<GestionarReportes />} />
-          <Route path="/asignar-permisos" element={<AsignarPermisos />} />
-        </Route>
-      </Routes>
-    </Router>
+    <PermisosProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route element={<MainLayout />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/gestionar-clientes" element={<GestionarClientes />} />
+            <Route path="/gestionar-roles-permisos" element={<GestionarRolesPermisos />} />
+            <Route path="/asignar-roles" element={<AsignarRoles />} />
+            <Route path="/gestionar-bitacora" element={<GestionarBitacora />} />
+            <Route path="/gestionar-usuarios" element={<GestionarUsuarios />} />
+            <Route path="/gestionar-inventario" element={<GestionarInventario />} />
+            <Route path="/gestionar-ventas" element={<GestionarVentas />} />
+            <Route path="/catalogo" element={<Catalogo />} />
+            <Route path="/carrito" element={<Carrito />} />
+            <Route path="/pagos" element={<Pagos />} />
+            <Route path="/pago-exitoso" element={<PagoExitoso />} />
+            <Route path="/predicciones" element={<DashboardPredicciones />} />
+            <Route path="/notificaciones" element={<GestionarNotificaciones />} />
+            <Route path="/reportes" element={<GestionarReportes />} />
+            <Route path="/asignar-permisos" element={<AsignarPermisos />} />
+          </Route>
+        </Routes>
+      </Router>
+    </PermisosProvider>
   );
 }
 

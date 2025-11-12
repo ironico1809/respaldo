@@ -89,7 +89,7 @@ class VentasPredictor:
         Obtiene datos reales de ventas de la base de datos
         """
         try:
-            ventas = Venta.objects.all().select_related('cliente').prefetch_related('items__producto')
+            ventas = Venta.objects.all().select_related('cliente').prefetch_related('detalles__producto')
             
             if ventas.count() < 10:
                 return None
@@ -97,11 +97,11 @@ class VentasPredictor:
             data_list = []
             for venta in ventas:
                 # Calcular precio promedio y cantidad total
-                total_cantidad = sum(item.cantidad for item in venta.items.all())
-                precio_promedio = venta.total / total_cantidad if total_cantidad > 0 else 0
+                total_cantidad = sum(item.cantidad for item in venta.detalles.all())
+                precio_promedio = venta.monto_total / total_cantidad if total_cantidad > 0 else 0
                 
                 # Obtener primer producto como referencia (simplificación)
-                primer_item = venta.items.first()
+                primer_item = venta.detalles.first()
                 producto_id = primer_item.producto.id if primer_item else 1
                 
                 data_list.append({
@@ -114,7 +114,7 @@ class VentasPredictor:
                     'categoria': 1,  # Simplificación
                     'precio_promedio': float(precio_promedio),
                     'cantidad': total_cantidad,
-                    'total_venta': float(venta.total)
+                    'total_venta': float(venta.monto_total)
                 })
             
             return pd.DataFrame(data_list)

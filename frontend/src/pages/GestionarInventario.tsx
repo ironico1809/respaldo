@@ -5,6 +5,7 @@ import ModalFormularioProducto from '../components/ModalFormularioProducto';
 import ModalRegistrarMovimiento from '../components/ModalRegistrarMovimiento';
 import EditButton from '../components/EditButton';
 import InactivarProductoButton from '../components/InactivarProductoButton';
+import { useBitacora } from '../hooks/useBitacora';
 interface Categoria {
   id: number;
   nombre: string;
@@ -40,6 +41,13 @@ const GestionarInventario: React.FC = () => {
   const [productoSeleccionado, setProductoSeleccionado] = useState<Producto | null>(null);
   const [loading, setLoading] = useState(true);
   const [filtroEstado, setFiltroEstado] = useState<'Todos' | 'Activo' | 'Inactivo'>('Activo');
+
+  const { registrar } = useBitacora();
+
+  useEffect(() => {
+    // Registrar acceso a la página
+    registrar('ACCESO', 'Accedió a Gestionar Inventario');
+  }, []);
 
   const cargarProductos = async () => {
     setLoading(true);

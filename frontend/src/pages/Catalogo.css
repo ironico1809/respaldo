@@ -142,7 +142,7 @@
 
 .filtro-busqueda svg {
   position: absolute;
-  left: 14px;
+  left: 8px;
   color: #a0aec0;
 }
 
@@ -374,6 +374,138 @@
 .catalogo-sin-productos p {
   margin: 0;
   font-weight: 500;
+}
+
+/* Botón de búsqueda por voz y limpiar */
+.filtro-busqueda {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.catalogo-busqueda {
+  padding-right: 100px !important; /* Espacio para ambos botones */
+}
+
+
+/* Botones minimalistas cuadrados en el buscador */
+
+.btn-voz-busqueda,
+.btn-limpiar-busqueda {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #f3f4f6;
+  color: #6b7280;
+  transition: all 0.3s ease;
+  box-shadow: none;
+}
+
+.btn-voz-busqueda {
+  right: 54px;
+}
+
+.btn-limpiar-busqueda {
+  right: 10px;
+}
+
+.btn-voz-busqueda {
+  right: 54px;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  transition: all 0.3s ease;
+  box-shadow: none;
+}
+
+.btn-voz-busqueda:hover,
+.btn-limpiar-busqueda:hover {
+  background: #e5e7eb;
+  color: #2563eb;
+  border-color: #2563eb;
+  transform: scale(1.05);
+}
+
+.btn-voz-busqueda:hover svg,
+.btn-limpiar-busqueda:hover svg {
+  color: #2563eb;
+  stroke: #2563eb;
+}
+
+/* Animación azul suave para micrófono escuchando */
+.btn-voz-busqueda.escuchando {
+  background: #dbeafe;
+    border: none;
+    background: transparent;
+  animation: pulse-suave-azul 2s ease-in-out infinite;
+}
+
+.btn-voz-busqueda.escuchando svg {
+  color: #2563eb;
+  stroke: #2563eb;
+  animation: escala-suave 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-suave-azul {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(37, 99, 235, 0);
+  }
+}
+
+@keyframes escala-suave {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Animación suave para botón limpiar */
+.btn-limpiar-busqueda:hover {
+  background: #fee2e2;
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+.btn-limpiar-busqueda:hover svg {
+  color: #ef4444;
+  stroke: #ef4444;
+  transform: rotate(90deg);
+}
+
+.btn-voz-busqueda:disabled {
+  background: #f3f4f6;
+  color: #d1d5db;
+  border-color: #e5e7eb;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.btn-voz-busqueda:disabled svg {
+  color: #d1d5db;
+  stroke: #d1d5db;
+}
+
+.btn-limpiar-busqueda:active,
+.btn-voz-busqueda:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.catalogo-busqueda {
+  padding-right: 110px !important;
 }
 
 @media (max-width: 768px) {

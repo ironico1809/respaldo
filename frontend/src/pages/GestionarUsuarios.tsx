@@ -5,6 +5,7 @@ import EditButton from '../components/EditButton';
 import DeleteButton from '../components/DeleteButton';
 import RegistrarUsuarioForm from '../components/RegistrarUsuarioForm';
 import { getUsuarios, actualizarUsuario } from '../services/usuarioService';
+import { useBitacora } from '../hooks/useBitacora';
 
 type Usuario = {
   id: number;
@@ -22,6 +23,13 @@ const GestionarUsuarios: React.FC = () => {
   const [usuarioAEditar, setUsuarioAEditar] = useState<Usuario | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  const { registrar } = useBitacora();
+
+  useEffect(() => {
+    // Registrar acceso a la página
+    registrar('ACCESO', 'Accedió a Gestionar Usuarios');
+  }, []);
 
   const cargarUsuarios = useCallback(async () => {
     try {
@@ -74,6 +82,10 @@ const GestionarUsuarios: React.FC = () => {
       try { // La eliminación es lógica, por lo que usamos el endpoint de actualizar
         const response = await actualizarUsuario(usuario.id, { estado: !usuario.estado });
         if (response.status === 200) {
+            // Registrar en bitácora
+            const accion = usuario.estado ? 'DESACTIVAR_USUARIO' : 'ACTIVAR_USUARIO';
+            await registrar(accion, `${accion === 'DESACTIVAR_USUARIO' ? 'Desactivó' : 'Activó'} al usuario ${usuario.username}`);
+            
             // Volvemos a cargar los usuarios para reflejar el cambio
             cargarUsuarios();
         } else {

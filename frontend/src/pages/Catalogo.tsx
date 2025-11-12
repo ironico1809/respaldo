@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Catalogo.css';
+import { API_ENDPOINTS } from '../config/api.config';
 
 interface Producto {
   id: number;
@@ -22,16 +23,22 @@ const Catalogo: React.FC = () => {
   const [mensajeNotificacion, setMensajeNotificacion] = useState<string>('');
   const [cargando, setCargando] = useState<boolean>(true);
   const [totalItemsCarrito, setTotalItemsCarrito] = useState<number>(0);
+  const [escuchandoVoz, setEscuchandoVoz] = useState<boolean>(false);
+  const [soportaVoz, setSoportaVoz] = useState<boolean>(false);
 
   useEffect(() => {
     cargarProductos();
     cargarCarrito();
+    // Verificar si el navegador soporta reconocimiento de voz
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      setSoportaVoz(true);
+    }
   }, []);
 
   const cargarProductos = async () => {
     try {
       setCargando(true);
-      const response = await fetch('http://localhost:8000/api/productos/');
+      const response = await fetch(API_ENDPOINTS.productos.list);
       const data = await response.json();
       // Mapear y filtrar productos activos con stock disponible
       const TIPO_CAMBIO = 6.96; // USD a BOB
@@ -59,7 +66,7 @@ const Catalogo: React.FC = () => {
 
   const cargarCarrito = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/carritos/mi_carrito/?usuario_id=1');
+      const response = await fetch(API_ENDPOINTS.carrito.miCarrito(1));
       const data = await response.json();
       setTotalItemsCarrito(data.total_items || 0);
     } catch (error) {
@@ -69,7 +76,7 @@ const Catalogo: React.FC = () => {
 
   const agregarAlCarrito = async (producto: Producto) => {
     try {
-      const response = await fetch('http://localhost:8000/api/carritos/agregar_item/', {
+      const response = await fetch(API_ENDPOINTS.carrito.agregarItem, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -99,6 +106,50 @@ const Catalogo: React.FC = () => {
     setMensajeNotificacion(`${tipo ? `[${tipo.toUpperCase()}] ` : ''}${mensaje}`);
     setMostrarNotificacion(true);
     setTimeout(() => setMostrarNotificacion(false), 2500);
+  };
+
+  const iniciarBusquedaPorVoz = () => {
+    const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
+    
+    if (!SpeechRecognition) {
+      mostrarNotificacionTemporal('Tu navegador no soporta reconocimiento de voz', 'error');
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'es-ES';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    recognition.onstart = () => {
+      setEscuchandoVoz(true);
+      mostrarNotificacionTemporal('🎤 Escuchando... Di el nombre del producto', 'info');
+    };
+
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      // Limpiar puntuación y espacios extra
+      const textoLimpio = transcript
+        .replace(/[.,;:!?¿¡]/g, '') // Eliminar puntuación
+        .replace(/\s+/g, ' ')        // Espacios múltiples a uno solo
+        .trim();                     // Eliminar espacios al inicio/final
+      
+      setBusqueda(textoLimpio);
+      setEscuchandoVoz(false);
+      mostrarNotificacionTemporal(`Buscando: "${textoLimpio}"`, 'success');
+    };
+
+    recognition.onerror = (event: any) => {
+      console.error('Error de reconocimiento:', event.error);
+      setEscuchandoVoz(false);
+      mostrarNotificacionTemporal('Error al escuchar. Intenta de nuevo.', 'error');
+    };
+
+    recognition.onend = () => {
+      setEscuchandoVoz(false);
+    };
+
+    recognition.start();
   };
 
   const productosFiltrados = productos.filter(producto => {
@@ -153,6 +204,33 @@ const Catalogo: React.FC = () => {
             value={busqueda}
             onChange={e => setBusqueda(e.target.value)}
           />
+          {soportaVoz && (
+            <button
+              className={`btn-voz-busqueda ${escuchandoVoz ? 'escuchando' : ''}`}
+              onClick={iniciarBusquedaPorVoz}
+              disabled={escuchandoVoz}
+              title="Buscar por voz"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                <line x1="12" y1="19" x2="12" y2="23"></line>
+                <line x1="8" y1="23" x2="16" y2="23"></line>
+              </svg>
+            </button>
+          )}
+          {busqueda && (
+            <button
+              className="btn-limpiar-busqueda"
+              onClick={() => setBusqueda('')}
+              title="Limpiar búsqueda"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          )}
         </div>
         {categorias.length > 0 && (
           <select

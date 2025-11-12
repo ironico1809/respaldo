@@ -154,7 +154,7 @@ class PrediccionVentasViewSet(viewsets.ModelViewSet):
                 ).annotate(
                     fecha=TruncDate('fecha_venta')
                 ).values('fecha').annotate(
-                    total=Sum('total'),
+                    total=Sum('monto_total'),
                     cantidad=Count('id')
                 ).order_by('fecha')
                 
@@ -175,9 +175,9 @@ class PrediccionVentasViewSet(viewsets.ModelViewSet):
                 ).annotate(
                     mes=TruncMonth('fecha_venta')
                 ).values('mes').annotate(
-                    total=Sum('total'),
+                    total=Sum('monto_total'),
                     cantidad=Count('id'),
-                    promedio=Avg('total')
+                    promedio=Avg('monto_total')
                 ).order_by('mes')
                 
                 data = [
@@ -208,11 +208,11 @@ class PrediccionVentasViewSet(viewsets.ModelViewSet):
         Retorna los productos más vendidos
         """
         try:
-            from Ventas.models import VentaItem
+            from Ventas.models import VentaDetalle
             
             limite = int(request.query_params.get('limite', 10))
             
-            productos = VentaItem.objects.values(
+            productos = VentaDetalle.objects.values(
                 'producto__id',
                 'producto__nombre',
                 'producto__precio'
@@ -261,14 +261,14 @@ def dashboard_data(request):
         ).annotate(
             mes=TruncMonth('fecha_venta')
         ).values('mes').annotate(
-            total=Sum('total'),
+            total_ventas=Sum('monto_total'),
             cantidad=Count('id')
         ).order_by('mes')
         
         historico = [
             {
                 'mes': v['mes'].strftime('%Y-%m'),
-                'total': float(v['total']),
+                'total': float(v['total_ventas']),
                 'cantidad': v['cantidad']
             }
             for v in ventas_historicas
@@ -281,8 +281,8 @@ def dashboard_data(request):
         predicciones_diarias = predictor.predecir_ventas_futuras(dias=30)
         
         # Productos más vendidos
-        from Ventas.models import VentaItem
-        productos_top = VentaItem.objects.values(
+        from Ventas.models import VentaDetalle
+        productos_top = VentaDetalle.objects.values(
             'producto__id',
             'producto__nombre'
         ).annotate(
