@@ -358,13 +358,13 @@ const DashboardPredicciones: React.FC = () => {
           <ResponsiveContainer width="100%" height={350}>
             <PieChart>
               <Pie
-                data={data.productos_top}
+                data={data.productos_top as any}
                 dataKey="cantidad"
                 nameKey="nombre"
                 cx="50%"
                 cy="50%"
                 outerRadius={120}
-                label={(entry) => entry.nombre}
+                label={(props) => props.payload?.nombre}
               >
                 {data.productos_top.map((_, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
