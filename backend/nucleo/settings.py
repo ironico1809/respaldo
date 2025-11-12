@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'Notificaciones',
     'Reportes',
     'Predicciones',
+    'Pagos',
 ]
 
 
@@ -117,6 +118,10 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",
 ]
 CORS_ALLOW_CREDENTIALS = True
+
+# Stripe Configuration
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
+STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
 
 
 # Password validation

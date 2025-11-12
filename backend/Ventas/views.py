@@ -1,8 +1,14 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.db import transaction
 from .models import Venta, VentaDetalle
-from .serializers import VentaSerializer, VentaDetalleSerializer, VentaCreateSerializer
+from .serializers import (
+    VentaSerializer, 
+    VentaDetalleSerializer, 
+    VentaCreateSerializer,
+    CrearVentaDesdeCarritoSerializer
+)
 from django.db.models import Sum, Count
 from datetime import datetime, timedelta
 
@@ -13,7 +19,41 @@ class VentaViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action == 'create':
             return VentaCreateSerializer
+        elif self.action == 'crear_desde_carrito':
+            return CrearVentaDesdeCarritoSerializer
         return VentaSerializer
+    
+    @action(detail=False, methods=['post'])
+    def crear_desde_carrito(self, request):
+        """Crear venta desde el carrito del usuario"""
+        serializer = CrearVentaDesdeCarritoSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            try:
+                venta = serializer.save()
+                return Response({
+                    'message': 'Venta creada exitosamente',
+                    'venta': VentaSerializer(venta).data
+                }, status=status.HTTP_201_CREATED)
+            except Exception as e:
+                return Response({
+                    'error': str(e)
+                }, status=status.HTTP_400_BAD_REQUEST)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['get'])
+    def metodos_pago(self, request):
+        """Obtener métodos de pago disponibles"""
+        return Response({
+            'metodos': [
+                {'value': 'efectivo', 'label': 'Efectivo', 'icon': '💵'},
+                {'value': 'tarjeta', 'label': 'Tarjeta de Crédito/Débito', 'icon': '💳'},
+                {'value': 'yape', 'label': 'Yape', 'icon': '📱'},
+                {'value': 'plin', 'label': 'Plin', 'icon': '📲'},
+                {'value': 'transferencia', 'label': 'Transferencia Bancaria', 'icon': '🏦'},
+            ]
+        })
     
     @action(detail=False, methods=['get'])
     def estadisticas(self, request):

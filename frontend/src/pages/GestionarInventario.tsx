@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './GestionarInventario.css';
 import ModalMovimientos from '../components/ModalMovimientos';
 import ModalFormularioProducto from '../components/ModalFormularioProducto';
+import ModalRegistrarMovimiento from '../components/ModalRegistrarMovimiento';
 import EditButton from '../components/EditButton';
 import InactivarProductoButton from '../components/InactivarProductoButton';
 interface Categoria {
@@ -35,6 +36,7 @@ const GestionarInventario: React.FC = () => {
   const [movimientos, setMovimientos] = useState<MovimientoInventario[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalMovimientosOpen, setIsModalMovimientosOpen] = useState(false);
+  const [isModalRegistrarMovimientoOpen, setIsModalRegistrarMovimientoOpen] = useState(false);
   const [productoSeleccionado, setProductoSeleccionado] = useState<Producto | null>(null);
   const [loading, setLoading] = useState(true);
   const [filtroEstado, setFiltroEstado] = useState<'Todos' | 'Activo' | 'Inactivo'>('Activo');
@@ -112,34 +114,7 @@ const GestionarInventario: React.FC = () => {
   const handleEditarProducto = (producto: Producto) => {
     setProductoSeleccionado(producto);
     setIsModalOpen(true);
-  };
-
-  // Función para inactivar producto usando el nuevo componente
-  const handleInactivarProducto = async (producto: { id: number; nombre: string }) => {
-    console.log('handleInactivarProducto llamado con:', producto);
-    if (window.confirm(`¿Seguro que deseas desactivar el producto "${producto.nombre}"?`)) {
-      try {
-        console.log('Enviando PATCH a:', `http://localhost:8000/api/productos/${producto.id}/`);
-        const response = await fetch(`http://localhost:8000/api/productos/${producto.id}/`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ estado: 'Inactivo' })
-        });
-        console.log('Respuesta recibida:', response.status, response.ok);
-        if (response.ok) {
-          await cargarProductos();
-          alert('Producto desactivado exitosamente');
-        } else {
-          const errorText = await response.text();
-          console.error('Error en la respuesta:', errorText);
-          alert('Error al desactivar el producto');
-        }
-      } catch (error) {
-        console.error('Error en la petición:', error);
-        alert('Error al desactivar el producto');
-      }
-    }
-  };
+  };  
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -222,6 +197,7 @@ const GestionarInventario: React.FC = () => {
     <div className="gestionar-inventario-container">
       <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
         <button className="btn btn-primary btn-nuevo" onClick={handleNuevoProducto}>+ Nuevo Producto</button>
+        <button className="btn btn-success" onClick={() => setIsModalRegistrarMovimientoOpen(true)}>Registrar Movimiento</button>
       </div>
       <div className="inventario-card">
         <div className="inventario-card-header">
@@ -315,6 +291,15 @@ const GestionarInventario: React.FC = () => {
             alCerrar={handleCloseModalMovimientos}
             producto={productoSeleccionado}
             movimientos={movimientos}
+          />
+          <ModalRegistrarMovimiento
+            abierto={isModalRegistrarMovimientoOpen}
+            alCerrar={() => setIsModalRegistrarMovimientoOpen(false)}
+            alGuardar={async () => {
+              await cargarProductos();
+              setIsModalRegistrarMovimientoOpen(false);
+            }}
+            productos={productos}
           />
     </div>
 

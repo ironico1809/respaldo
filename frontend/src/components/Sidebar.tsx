@@ -61,7 +61,7 @@ const Sidebar: React.FC = () => {
           </NavLink>
           <NavLink to="/asignar-roles" className={({ isActive }) => "nav-subitem" + (isActive ? " active" : "")}>
             <span className="nav-subitem-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
             </span>
             <span>Asignar Roles a Usuarios</span>
           </NavLink>
@@ -125,12 +125,7 @@ const Sidebar: React.FC = () => {
           <span className="nav-item-arrow"></span>
         </div>
         <div className="submenu">
-          <NavLink to="/inventario" className={({ isActive }) => "nav-subitem" + (isActive ? " active" : "")}> 
-            <span className="nav-subitem-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
-            </span>
-            <span>Inventario de Productos</span>
-          </NavLink>
+          {/* Submenú Inventario de Productos eliminado */}
           <NavLink to="/gestionar-inventario" className={({ isActive }) => "nav-subitem" + (isActive ? " active" : "")}> 
             <span className="nav-subitem-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><line x1="8" y1="4" x2="8" y2="20"></line></svg>
@@ -138,12 +133,30 @@ const Sidebar: React.FC = () => {
             <span>Gestionar Inventario</span>
           </NavLink>
         </div>
-        <a href="#" className="nav-item">
+        <div 
+          className={`nav-item ${activeMenu === 'ecommerce' ? 'active' : ''}`}
+          onClick={() => handleMenuClick('ecommerce')}
+        >
           <span className="nav-item-icon">
             <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.16 14l.84-2h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0 0 20 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12z" fill="#fff"/></svg>
           </span>
-          <span>Compras / E-Commerce</span>
-        </a>
+          <span>E-Commerce</span>
+          <span className="nav-item-arrow"></span>
+        </div>
+        <div className="submenu">
+          <NavLink to="/catalogo" className={({ isActive }) => "nav-subitem" + (isActive ? " active" : "")}>
+            <span className="nav-subitem-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            </span>
+            <span>Catálogo de Productos</span>
+          </NavLink>
+          <NavLink to="/carrito" className={({ isActive }) => "nav-subitem" + (isActive ? " active" : "")}>
+            <span className="nav-subitem-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            </span>
+            <span>Carrito de Compras</span>
+          </NavLink>
+        </div>
         <NavLink to="/notificaciones" className={({ isActive }) => "nav-item" + (isActive ? " active" : "")}>
           <span className="nav-item-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>

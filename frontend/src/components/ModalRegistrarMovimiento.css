@@ -1,0 +1,107 @@
+/* ModalRegistrarMovimiento.css */
+
+.modal-registrar-movimiento-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-registrar-movimiento {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  padding: 32px 28px 24px 28px;
+  min-width: 340px;
+  max-width: 95vw;
+  width: 400px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.modal-registrar-movimiento-titulo {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-primary, #2d3748);
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.modal-registrar-movimiento-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.modal-registrar-movimiento-form label {
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 4px;
+}
+
+.modal-registrar-movimiento-form select,
+.modal-registrar-movimiento-form input,
+.modal-registrar-movimiento-form textarea {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-size: 1rem;
+  background: #f9f9f9;
+  transition: border-color 0.2s;
+}
+
+.modal-registrar-movimiento-form select:focus,
+.modal-registrar-movimiento-form input:focus,
+.modal-registrar-movimiento-form textarea:focus {
+  border-color: var(--color-primary, #3182ce);
+  outline: none;
+}
+
+.modal-registrar-movimiento-form .stock-actual {
+  font-size: 0.95rem;
+  color: #888;
+  margin-bottom: 2px;
+}
+
+.modal-registrar-movimiento-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.modal-registrar-movimiento-acciones button {
+  padding: 8px 18px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  background: var(--color-primary, #3182ce);
+  color: #fff;
+  transition: background 0.2s;
+}
+
+.modal-registrar-movimiento-acciones button.cancelar {
+  background: #e2e8f0;
+  color: #444;
+}
+
+.modal-registrar-movimiento-acciones button:active {
+  background: #225ea8;
+}
+
+@media (max-width: 500px) {
+  .modal-registrar-movimiento {
+    width: 95vw;
+    padding: 18px 8px 14px 8px;
+  }
+}

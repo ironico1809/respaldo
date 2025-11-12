@@ -13,6 +13,11 @@ import GestionarVentas from './pages/GestionarVentas.tsx';
 import GestionarNotificaciones from './pages/GestionarNotificaciones.tsx';
 import GestionarReportes from './pages/GestionarReportes.tsx';
 import AsignarPermisos from './pages/AsignarPermisos.tsx';
+import Catalogo from './pages/Catalogo.tsx';
+import Carrito from './pages/Carrito.tsx';
+import Pagos from './pages/Pagos.tsx';
+import PagoExitoso from './pages/PagoExitoso.tsx';
+import DashboardPredicciones from './pages/DashboardPredicciones.tsx';
 
 function App() {
   return (
@@ -29,6 +34,11 @@ function App() {
           <Route path="/gestionar-usuarios" element={<GestionarUsuarios />} />
           <Route path="/gestionar-inventario" element={<GestionarInventario />} />
           <Route path="/gestionar-ventas" element={<GestionarVentas />} />
+          <Route path="/catalogo" element={<Catalogo />} />
+          <Route path="/carrito" element={<Carrito />} />
+          <Route path="/pagos" element={<Pagos />} />
+          <Route path="/pago-exitoso" element={<PagoExitoso />} />
+          <Route path="/predicciones" element={<DashboardPredicciones />} />
           <Route path="/notificaciones" element={<GestionarNotificaciones />} />
           <Route path="/reportes" element={<GestionarReportes />} />
           <Route path="/asignar-permisos" element={<AsignarPermisos />} />

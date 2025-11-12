@@ -62,6 +62,41 @@ class MovimientoInventarioViewSet(viewsets.ModelViewSet):
     queryset = MovimientoInventario.objects.all()
     serializer_class = MovimientoInventarioSerializer
     
+    def create(self, request, *args, **kwargs):
+        """Crear movimiento de inventario y actualizar stock automáticamente"""
+        producto_id = request.data.get('producto')
+        tipo_movimiento = request.data.get('tipo_movimiento')
+        cantidad = int(request.data.get('cantidad', 0))
+        
+        try:
+            producto = Producto.objects.get(id=producto_id)
+            
+            # Actualizar stock según tipo de movimiento
+            if tipo_movimiento == 'entrada':
+                producto.stock += cantidad
+            elif tipo_movimiento == 'salida':
+                if producto.stock < cantidad:
+                    return Response(
+                        {'error': 'Stock insuficiente para realizar la salida'},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+                producto.stock -= cantidad
+            elif tipo_movimiento == 'ajuste':
+                producto.stock = cantidad
+            
+            producto.save()
+            
+            # Crear el movimiento
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+            
+        except Producto.DoesNotExist:
+            return Response({'error': 'Producto no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+    
     @action(detail=False, methods=['get'])
     def por_producto(self, request):
         """Obtener movimientos de un producto"""
@@ -69,6 +104,6 @@ class MovimientoInventarioViewSet(viewsets.ModelViewSet):
         if not producto_id:
             return Response({'error': 'producto_id requerido'}, status=status.HTTP_400_BAD_REQUEST)
         
-        movimientos = MovimientoInventario.objects.filter(producto_id=producto_id)
+        movimientos = MovimientoInventario.objects.filter(producto_id=producto_id).order_by('-fecha_movimiento')
         serializer = self.get_serializer(movimientos, many=True)
         return Response(serializer.data)

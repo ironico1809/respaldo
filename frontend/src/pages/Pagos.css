@@ -1,0 +1,206 @@
+.pagos-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1e3a5f 0%, #2c5f8d 100%);
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagos-content {
+  width: 100%;
+  max-width: 600px;
+}
+
+.checkout-form {
+  background: white;
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.payment-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  color: #1e3a5f;
+}
+
+.payment-header h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.payment-summary {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.payment-summary h3 {
+  margin: 0 0 1rem 0;
+  color: #1e3a5f;
+  font-size: 1.2rem;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  color: #2c3e50;
+  font-size: 1rem;
+}
+
+.summary-row.total {
+  border-top: 2px solid #1e3a5f;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.total-amount {
+  color: #1e3a5f;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.card-element-container {
+  margin-bottom: 2rem;
+}
+
+.card-element-container label {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: #2c3e50;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.card-element-container .StripeElement {
+  padding: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  transition: border-color 0.3s;
+}
+
+.card-element-container .StripeElement:focus,
+.card-element-container .StripeElement--focus {
+  border-color: #1e3a5f;
+  outline: none;
+}
+
+.card-element-container .StripeElement--invalid {
+  border-color: #e74c3c;
+}
+
+.error-message {
+  background: #fee;
+  color: #e74c3c;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  border-left: 4px solid #e74c3c;
+}
+
+.pay-button {
+  width: 100%;
+  padding: 1rem;
+  background: #1e3a5f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pay-button:hover:not(:disabled) {
+  background: #2c5f8d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3);
+}
+
+.pay-button:disabled {
+  background: #95a5a6;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.secure-payment {
+  text-align: center;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0;
+}
+
+.pagos-success {
+  background: white;
+  border-radius: 12px;
+  padding: 3rem;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.success-icon {
+  color: #27ae60;
+  margin-bottom: 1.5rem;
+}
+
+.pagos-success h2 {
+  color: #1e3a5f;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+}
+
+.pagos-success p {
+  color: #7f8c8d;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.pagos-success button {
+  padding: 0.875rem 2rem;
+  background: #1e3a5f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.pagos-success button:hover {
+  background: #2c5f8d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3);
+}
+
+@media (max-width: 768px) {
+  .pagos-container {
+    padding: 1rem;
+  }
+
+  .checkout-form {
+    padding: 1.5rem;
+  }
+
+  .payment-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .total-amount {
+    font-size: 1.3rem;
+  }
+}
