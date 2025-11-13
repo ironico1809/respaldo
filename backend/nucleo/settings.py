@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import dj_database_url
 load_dotenv()  # carga las variables desde .env
 
 
@@ -97,7 +98,7 @@ WSGI_APPLICATION = 'nucleo.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# Database - PostgreSQL
+# Database - PostgreSQL (prefer DATABASE_URL, fallback to discrete vars)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -112,10 +113,21 @@ DATABASES = {
     }
 }
 
+DATABASE_URL = os.getenv('DATABASE_URL')
+if DATABASE_URL:
+    # Neon recomienda sslmode=require; dj_database_url con ssl_require asegura SSL si falta en la URL
+    DATABASES['default'] = dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
+
 # Configuración de CORS
 # En desarrollo permite localhost y 127.0.0.1
 # En producción, agrega tus dominios de AWS y móvil
 CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:5173,http://127.0.0.1:5173').split(',')
+
+# CSRF Trusted Origins (requerido por Django cuando hay dominios externos)
+CSRF_TRUSTED_ORIGINS = os.getenv(
+    'CSRF_TRUSTED_ORIGINS',
+    'http://localhost:5173,http://127.0.0.1:5173'
+).split(',')
 
 # Permite CORS para todas las origins en desarrollo (útil para móvil)
 if DEBUG:
@@ -200,6 +212,11 @@ if not DEBUG:
     # Use WhiteNoise for static files in production
     MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+    # Seguridad detrás de proxy (Railway/Vercel/NGINX)
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
